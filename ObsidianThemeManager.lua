@@ -58,6 +58,16 @@ local ThemeManager = {} do
         ["Cyberpunk"] 		= { 16, httpService:JSONDecode([[{"FontColor":"f9f9f9","MainColor":"262335","AccentColor":"00ff9f","BackgroundColor":"1a1a2e","OutlineColor":"413c5e"}]]) },
         ["Oceanic Next"] 	= { 17, httpService:JSONDecode([[{"FontColor":"d8dee9","MainColor":"1b2b34","AccentColor":"6699cc","BackgroundColor":"16232a","OutlineColor":"343d46"}]]) },
         ["Material"] 		= { 18, httpService:JSONDecode([[{"FontColor":"eeffff","MainColor":"212121","AccentColor":"82aaff","BackgroundColor":"151515","OutlineColor":"424242"}]]) },
+        ["Synthwave"] 		= { 19, httpService:JSONDecode([[{"FontColor":"ffffff","MainColor":"2a2139","AccentColor":"f97e72","BackgroundColor":"1a1030","OutlineColor":"3d2e5a"}]]) },
+        ["Outrun"] 			= { 20, httpService:JSONDecode([[{"FontColor":"ffffff","MainColor":"0f0821","AccentColor":"ff00ff","BackgroundColor":"0a0418","OutlineColor":"241b3a"}]]) },
+        ["Forest"] 			= { 21, httpService:JSONDecode([[{"FontColor":"e8e8e8","MainColor":"1e2a1e","AccentColor":"4caf50","BackgroundColor":"141e14","OutlineColor":"2d3a2d"}]]) },
+        ["Crimson"] 		= { 22, httpService:JSONDecode([[{"FontColor":"ffffff","MainColor":"1a0a0a","AccentColor":"d10000","BackgroundColor":"120606","OutlineColor":"2a1515"}]]) },
+        ["Ice"] 			= { 23, httpService:JSONDecode([[{"FontColor":"000000","MainColor":"d4f1f9","AccentColor":"00b4d8","BackgroundColor":"c4e9f6","OutlineColor":"a0d8e8"}]]) },
+        ["Amethyst"] 		= { 24, httpService:JSONDecode([[{"FontColor":"ffffff","MainColor":"2a1a3d","AccentColor":"9b59b6","BackgroundColor":"1f0f30","OutlineColor":"3d2a4d"}]]) },
+        ["Midnight"] 		= { 25, httpService:JSONDecode([[{"FontColor":"e0e0e0","MainColor":"0a0a1a","AccentColor":"4d79ff","BackgroundColor":"050510","OutlineColor":"151525"}]]) },
+        ["Hacker"] 			= { 26, httpService:JSONDecode([[{"FontColor":"00ff00","MainColor":"000000","AccentColor":"00ff00","BackgroundColor":"0a0a0a","OutlineColor":"003300"}]]) },
+        ["Sunset"] 			= { 27, httpService:JSONDecode([[{"FontColor":"ffffff","MainColor":"2d1c2e","AccentColor":"f77f00","BackgroundColor":"1e0f1f","OutlineColor":"3d2a3e"}]]) },
+        ["Neon"] 			= { 28, httpService:JSONDecode([[{"FontColor":"ffffff","MainColor":"1a1a2e","AccentColor":"00f5d4","BackgroundColor":"0f0f23","OutlineColor":"2a2a3e"}]]) },
     }
 
     function ThemeManager:SetLibrary(library)
