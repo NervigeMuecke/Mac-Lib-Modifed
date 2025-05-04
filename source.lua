@@ -11,7 +11,7 @@ local MacLib = {
 }
 
 local HttpService = game:GetService("HttpService")
-local settingsFileName = "MacLib/ColorData.json"
+local settingsFileName = "ZYPHERION/Arsenal/GUI/ColorData.json"
 local Functions = {}
 
 local function Color3ToTable(color)
