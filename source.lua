@@ -194,9 +194,6 @@ function MacLib:Window(Settings)
 		})
 	end)
 
-
-
-
 	local tweenService = game:GetService("TweenService")
 	local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
 	local goal = { Rotation = gradient.Rotation + 360 }
@@ -1574,7 +1571,7 @@ function MacLib:Window(Settings)
 			elements1.ClipsDescendants = true
 
 			local elementsUIPadding = Instance.new("UIPadding")
-			elementsUIPadding.Name = "ElementsUIPadding"
+			elementsUIPadding.Name = "UIPadding"
 			elementsUIPadding.PaddingRight = UDim.new(0, 5)
 			elementsUIPadding.PaddingTop = UDim.new(0, 10)
 			elementsUIPadding.PaddingBottom = UDim.new(0, 10)
@@ -2072,34 +2069,49 @@ function MacLib:Window(Settings)
 					local ValueDisplayMethod = DisplayMethods[SliderFunctions.Settings.DisplayMethod] or DisplayMethods.Value
 					local finalValue
 
-					local function SetValue(val, ignorecallback)
-						local posXScale
+                    local function SetValue(val, ignorecallback, isComplete)
+                        local posXScale
+                
+                        if typeof(val) == "Instance" then
+                            local input = val
+                            posXScale = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+                        else
+                            local value = val
+                            posXScale = (value - SliderFunctions.Settings.Minimum) / (SliderFunctions.Settings.Maximum - Settings.Minimum)
+                        end
+                
+                        local pos = UDim2.new(posXScale, 0, 0.5, 0)
+                        sliderHead.Position = pos
+                
+                        finalValue = posXScale * (SliderFunctions.Settings.Maximum - SliderFunctions.Settings.Minimum) + Settings.Minimum
+                
+                        sliderValue.Text = (Settings.Prefix or "") .. ValueDisplayMethod(finalValue, SliderFunctions.Settings.Precision) .. (Settings.Suffix or "")
+                
+                        if not ignorecallback then
+                            task.spawn(function()
+                                if SliderFunctions.Settings.Callback then
+                                    SliderFunctions.Settings.Callback(finalValue)
+                                end
+                            end)
+                        end
+                
+                        SliderFunctions.Value = finalValue
+                    end
 
-						if typeof(val) == "Instance" then
-							local input = val
-							posXScale = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-						else
-							local value = val
-							posXScale = (value - SliderFunctions.Settings.Minimum) / (SliderFunctions.Settings.Maximum - Settings.Minimum)
-						end
-
-						local pos = UDim2.new(posXScale, 0, 0.5, 0)
-						sliderHead.Position = pos
-
-						finalValue = posXScale * (SliderFunctions.Settings.Maximum - SliderFunctions.Settings.Minimum) + Settings.Minimum
-
-						sliderValue.Text = (Settings.Prefix or "") .. ValueDisplayMethod(finalValue, SliderFunctions.Settings.Precision) .. (Settings.Suffix or "")
-
-						if not ignorecallback then
-							task.spawn(function()
-								if SliderFunctions.Settings.Callback then
-									SliderFunctions.Settings.Callback(finalValue)
-								end
-							end)
-						end
-
-						SliderFunctions.Value = finalValue
-					end
+                    function SliderFunctions:SyncValue()
+                        if SliderFunctions.Value then
+                            task.spawn(function()
+                                if SliderFunctions.Settings.Callback then
+                                    SliderFunctions.Settings.Callback(SliderFunctions.Value)
+                                end
+                            end)
+                        end
+                    end
+                    
+                    task.spawn(function()
+                        task.wait(0.1)
+                        SliderFunctions:SyncValue()
+                    end)
 
 					SetValue(SliderFunctions.Settings.Default, true)
 
@@ -2169,9 +2181,12 @@ function MacLib:Window(Settings)
 					function SliderFunctions:SetVisibility(State)
 						slider.Visible = State
 					end
-					function SliderFunctions:UpdateValue(Value)
-						SetValue(tonumber(Value), true)
-					end
+                    function SliderFunctions:UpdateValue(Value, skipCallback)
+                        SetValue(tonumber(Value), skipCallback)
+                        if not skipCallback then
+                            SliderFunctions:SyncValue()
+                        end
+                    end
 					function SliderFunctions:GetValue()
 						return finalValue
 					end
@@ -3445,18 +3460,18 @@ function MacLib:Window(Settings)
 					inputBoxUICorner.Parent = inputBox
 
 					local inputBoxUIStroke = Instance.new("UIStroke")
-					inputBoxUIStroke.Name = "InputBoxUIStroke"
+					inputBoxUIStroke.Name = "UIStroke"
 					inputBoxUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					inputBoxUIStroke.Color = Color3.fromRGB(255, 255, 255)
 					inputBoxUIStroke.Transparency = 0.9
 					inputBoxUIStroke.Parent = inputBox
 
 					local inputBoxUISizeConstraint = Instance.new("UISizeConstraint")
-					inputBoxUISizeConstraint.Name = "InputBoxUISizeConstraint"
+					inputBoxUISizeConstraint.Name = "UISizeConstraint"
 					inputBoxUISizeConstraint.Parent = inputBox
 
 					local inputBoxUIPadding = Instance.new("UIPadding")
-					inputBoxUIPadding.Name = "InputBoxUIPadding"
+					inputBoxUIPadding.Name = "UIPadding"
 					inputBoxUIPadding.PaddingLeft = UDim.new(0, 8)
 					inputBoxUIPadding.PaddingRight = UDim.new(0, 10)
 					inputBoxUIPadding.Parent = inputBox
@@ -3523,23 +3538,23 @@ function MacLib:Window(Settings)
 					inputBox1.Size = UDim2.fromOffset(75, 25)
 
 					local inputBoxUICorner1 = Instance.new("UICorner")
-					inputBoxUICorner1.Name = "InputBoxUICorner"
+					inputBoxUICorner1.Name = "UICorner"
 					inputBoxUICorner1.CornerRadius = UDim.new(0, 4)
 					inputBoxUICorner1.Parent = inputBox1
 
 					local inputBoxUIStroke1 = Instance.new("UIStroke")
-					inputBoxUIStroke1.Name = "InputBoxUIStroke"
+					inputBoxUIStroke1.Name = "UIStroke"
 					inputBoxUIStroke1.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					inputBoxUIStroke1.Color = Color3.fromRGB(255, 255, 255)
 					inputBoxUIStroke1.Transparency = 0.9
 					inputBoxUIStroke1.Parent = inputBox1
 
 					local inputBoxUISizeConstraint1 = Instance.new("UISizeConstraint")
-					inputBoxUISizeConstraint1.Name = "InputBoxUISizeConstraint"
+					inputBoxUISizeConstraint1.Name = "UISizeConstraint"
 					inputBoxUISizeConstraint1.Parent = inputBox1
 
 					local inputBoxUIPadding1 = Instance.new("UIPadding")
-					inputBoxUIPadding1.Name = "InputBoxUIPadding"
+					inputBoxUIPadding1.Name = "UIPadding"
 					inputBoxUIPadding1.PaddingLeft = UDim.new(0, 8)
 					inputBoxUIPadding1.PaddingRight = UDim.new(0, 10)
 					inputBoxUIPadding1.Parent = inputBox1
@@ -3606,23 +3621,23 @@ function MacLib:Window(Settings)
 					inputBox2.Size = UDim2.fromOffset(75, 25)
 
 					local inputBoxUICorner2 = Instance.new("UICorner")
-					inputBoxUICorner2.Name = "InputBoxUICorner"
+					inputBoxUICorner2.Name = "UICorner"
 					inputBoxUICorner2.CornerRadius = UDim.new(0, 4)
 					inputBoxUICorner2.Parent = inputBox2
 
 					local inputBoxUIStroke2 = Instance.new("UIStroke")
-					inputBoxUIStroke2.Name = "InputBoxUIStroke"
+					inputBoxUIStroke2.Name = "UIStroke"
 					inputBoxUIStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					inputBoxUIStroke2.Color = Color3.fromRGB(255, 255, 255)
 					inputBoxUIStroke2.Transparency = 0.9
 					inputBoxUIStroke2.Parent = inputBox2
 
 					local inputBoxUISizeConstraint2 = Instance.new("UISizeConstraint")
-					inputBoxUISizeConstraint2.Name = "InputBoxUISizeConstraint"
+					inputBoxUISizeConstraint2.Name = "UISizeConstraint"
 					inputBoxUISizeConstraint2.Parent = inputBox2
 
 					local inputBoxUIPadding2 = Instance.new("UIPadding")
-					inputBoxUIPadding2.Name = "InputBoxUIPadding"
+					inputBoxUIPadding2.Name = "UIPadding"
 					inputBoxUIPadding2.PaddingLeft = UDim.new(0, 8)
 					inputBoxUIPadding2.PaddingRight = UDim.new(0, 10)
 					inputBoxUIPadding2.Parent = inputBox2
@@ -3690,23 +3705,23 @@ function MacLib:Window(Settings)
 					inputBox3.Size = UDim2.fromOffset(75, 25)
 
 					local inputBoxUICorner3 = Instance.new("UICorner")
-					inputBoxUICorner3.Name = "InputBoxUICorner"
+					inputBoxUICorner3.Name = "UICorner"
 					inputBoxUICorner3.CornerRadius = UDim.new(0, 4)
 					inputBoxUICorner3.Parent = inputBox3
 
 					local inputBoxUIStroke3 = Instance.new("UIStroke")
-					inputBoxUIStroke3.Name = "InputBoxUIStroke"
+					inputBoxUIStroke3.Name = "UIStroke"
 					inputBoxUIStroke3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					inputBoxUIStroke3.Color = Color3.fromRGB(255, 255, 255)
 					inputBoxUIStroke3.Transparency = 0.9
 					inputBoxUIStroke3.Parent = inputBox3
 
 					local inputBoxUISizeConstraint3 = Instance.new("UISizeConstraint")
-					inputBoxUISizeConstraint3.Name = "InputBoxUISizeConstraint"
+					inputBoxUISizeConstraint3.Name = "UISizeConstraint"
 					inputBoxUISizeConstraint3.Parent = inputBox3
 
 					local inputBoxUIPadding3 = Instance.new("UIPadding")
-					inputBoxUIPadding3.Name = "InputBoxUIPadding"
+					inputBoxUIPadding3.Name = "UIPadding"
 					inputBoxUIPadding3.PaddingLeft = UDim.new(0, 8)
 					inputBoxUIPadding3.PaddingRight = UDim.new(0, 10)
 					inputBoxUIPadding3.Parent = inputBox3
@@ -3773,23 +3788,23 @@ function MacLib:Window(Settings)
 					inputBox4.Size = UDim2.fromOffset(75, 25)
 
 					local inputBoxUICorner4 = Instance.new("UICorner")
-					inputBoxUICorner4.Name = "InputBoxUICorner"
+					inputBoxUICorner4.Name = "UICorner"
 					inputBoxUICorner4.CornerRadius = UDim.new(0, 4)
 					inputBoxUICorner4.Parent = inputBox4
 
 					local inputBoxUIStroke4 = Instance.new("UIStroke")
-					inputBoxUIStroke4.Name = "InputBoxUIStroke"
+					inputBoxUIStroke4.Name = "UIStroke"
 					inputBoxUIStroke4.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					inputBoxUIStroke4.Color = Color3.fromRGB(255, 255, 255)
 					inputBoxUIStroke4.Transparency = 0.9
 					inputBoxUIStroke4.Parent = inputBox4
 
 					local inputBoxUISizeConstraint4 = Instance.new("UISizeConstraint")
-					inputBoxUISizeConstraint4.Name = "InputBoxUISizeConstraint"
+					inputBoxUISizeConstraint4.Name = "UISizeConstraint"
 					inputBoxUISizeConstraint4.Parent = inputBox4
 
 					local inputBoxUIPadding4 = Instance.new("UIPadding")
-					inputBoxUIPadding4.Name = "InputBoxUIPadding"
+					inputBoxUIPadding4.Name = "UIPadding"
 					inputBoxUIPadding4.PaddingLeft = UDim.new(0, 8)
 					inputBoxUIPadding4.PaddingRight = UDim.new(0, 10)
 					inputBoxUIPadding4.Parent = inputBox4
@@ -4256,8 +4271,7 @@ function MacLib:Window(Settings)
 					modifierInputs.Hex.FocusLost:Connect(updateFromHex)
 					modifierInputs.Red.FocusLost:Connect(updateFromRGB)
 					modifierInputs.Green.FocusLost:Connect(updateFromRGB)
-					modifierInputs.Blue.FocusLost:Connect(updateFromRGB)
-					modifierInputs.Alpha.FocusLost:Connect(update)
+					modifierInputs.Blue.FocusLost:Connect(update)
 
 					modifierInputs.Hex.Focused:Connect(function()
 						onFocusEnter(modifierInputs.Hex)
@@ -4270,9 +4284,6 @@ function MacLib:Window(Settings)
 					end)
 					modifierInputs.Blue.Focused:Connect(function()
 						onFocusEnter(modifierInputs.Blue)
-					end)
-					modifierInputs.Alpha.Focused:Connect(function()
-						onFocusEnter(modifierInputs.Alpha)
 					end)
 
 					local function makeCanvas()
@@ -5707,15 +5718,14 @@ end
 
 function MacLib:Demo()
 	local Window = MacLib:Window({
-		Title = "ZYHPERION",
-		Subtitle = "Beta V1.1 | ARSENAL",
-		Size = UDim2.fromOffset(875, 725),
-		DragStyle = 2,
+		Title = "Maclib Demo",
+		Subtitle = "This is a subtitle.",
+		Size = UDim2.fromOffset(868, 650),
+		DragStyle = 1,
 		DisabledWindowControls = {},
 		ShowUserInfo = true,
-		Keybind = Enum.KeyCode.RightShift,
-		AcrylicBlur = false,
-		Notfication = false,
+		Keybind = Enum.KeyCode.RightControl,
+		AcrylicBlur = true,
 	})
 
 	local globalSettings = {
@@ -5724,6 +5734,11 @@ function MacLib:Demo()
 			Default = Window:GetAcrylicBlurState(),
 			Callback = function(bool)
 				Window:SetAcrylicBlurState(bool)
+				Window:Notify({
+					Title = Window.Settings.Title,
+					Description = (bool and "Enabled" or "Disabled") .. " UI Blur",
+					Lifetime = 5
+				})
 			end,
 		}),
 		NotificationToggler = Window:GlobalSetting({
@@ -5749,28 +5764,6 @@ function MacLib:Demo()
 					Lifetime = 5
 				})
 			end,
-		}),
-		Discordthing = Window:GlobalSetting({
-			Name = "Discord",
-			Default = false,
-			Callback = function()
-				Window:Dialog({
-					Title = "ZYPHERION",
-					Description = "Do you want to join our Discord?",
-					Buttons = {
-						{
-							Name = "Yes :3",
-							Callback = function()
-								setclipboard("https://discord.gg/79ttSvSS28")
-								NotifyLib.prompt('ZYPHERION', "Discord Invitelink copied to your clipboard! Paste it into your browser!", 5)
-							end,
-						},
-						{
-							Name = "No D:",
-						}
-					}
-				})            
-			end
 		})
 	}
 
