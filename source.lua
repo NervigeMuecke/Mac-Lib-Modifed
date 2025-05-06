@@ -4736,6 +4736,54 @@ function MacLib:Window(Settings)
 				SelectCurrentTab()
 			end
 
+			function TabFunctions:InsertThemeSection()
+
+				local ThemeSection = TabFunctions:Section({ Side = "Right" })
+
+				ThemeSection:Button({
+					Name = "Reset Colors",
+					Callback = function()
+						Functions:resetcolors()
+					end
+				})
+				
+				ThemeSection:Toggle({
+					Name = "Animation",
+					Default = MacLib.Animation,
+					Callback = function(value)
+						MacLib.Animation = value
+					end,
+				}, "Animation")
+				
+				ThemeSection:Colorpicker({
+					Name = "GUI Gradient Color1",
+					Default = MacLib.Color1,
+					Alpha = 0,
+					Callback = function(A)
+						MacLib.Color1 = A
+					end
+				}, "MaclibColor1")
+				
+				ThemeSection:Colorpicker({
+					Name = "GUI Gradient Color2",
+					Default = MacLib.Color2,
+					Alpha = 0,
+					Callback = function(A)
+						MacLib.Color2 = A
+					end
+				}, "MaclibColor2")
+				
+				ThemeSection:Colorpicker({
+					Name = "GUI Gradient Color3",
+					Default = MacLib.Color3,
+					Alpha = 0,
+					Callback = function(A)
+						MacLib.Color3 = A
+					end
+				}, "MaclibColor3")
+				
+			end
+
 			function TabFunctions:InsertConfigSection(Side)
 				local configSection = TabFunctions:Section({ Side = "Left" })
 
