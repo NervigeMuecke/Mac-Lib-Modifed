@@ -3,7 +3,7 @@ local MacLib = {
 	Color1 = Color3.fromRGB(8, 0, 122),
 	Color2 = Color3.fromRGB(11, 11, 11),
 	Color3 = Color3.fromRGB(8, 0, 122),
-	Folder = "Maclib", 
+	Folder = "ZYPHERION",
 	Animation = true,
 	GetService = function(service)
 		return cloneref and cloneref(game:GetService(service)) or game:GetService(service)
@@ -4932,11 +4932,48 @@ function MacLib:Window(Settings)
 		notification.Name = "Notification"
 		notification.AnchorPoint = Vector2.new(0.5, 0.5)
 		notification.AutomaticSize = Enum.AutomaticSize.Y
-		notification.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		--notification.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 		notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		notification.BorderSizePixel = 0
 		notification.Position = UDim2.fromScale(0.5, 0.5)
 		notification.Size = UDim2.fromOffset(Settings.SizeX or 250, 0)
+
+		local gradient = Instance.new("UIGradient")
+
+		gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, MacLib.Color1),
+			ColorSequenceKeypoint.new(0.5, MacLib.Color2),
+			ColorSequenceKeypoint.new(1, MacLib.Color3),
+		})
+		gradient.Rotation = 45
+		gradient.Parent = notification
+
+		local tweenService = game:GetService("TweenService")
+		local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
+		local goal = { Rotation = gradient.Rotation + 360 }
+		local tween = tweenService:Create(gradient, info, goal)
+
+
+		RunService.RenderStepped:Connect(function()
+			if MacLib.Animation then 
+				tween:Play()
+			else
+				tween:Pause()
+			end
+			Functions:saveColorsToFile()
+			gradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, MacLib.Color1),
+				ColorSequenceKeypoint.new(0.5, MacLib.Color2),
+				ColorSequenceKeypoint.new(1, MacLib.Color3),
+			})
+		end)
+
+		local tweenService = game:GetService("TweenService")
+		local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
+		local goal = { Rotation = gradient.Rotation + 360 }
+		local tween = tweenService:Create(gradient, info, goal)
+
+		tween:Play()
 
 		notification.Parent = notifications
 
@@ -5167,7 +5204,7 @@ function MacLib:Window(Settings)
 		prompt.Name = "Prompt"
 		prompt.AnchorPoint = Vector2.new(0.5, 0.5)
 		prompt.AutomaticSize = Enum.AutomaticSize.Y
-		prompt.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		--prompt.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 		prompt.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		prompt.BorderSizePixel = 0
 		prompt.Position = UDim2.fromScale(0.5, 0.5)
@@ -5177,6 +5214,38 @@ function MacLib:Window(Settings)
 		promptUIScale.Name = "BaseUIScale"
 		promptUIScale.Parent = prompt
 		promptUIScale.Scale = 0.95
+
+
+		
+		local gradient = Instance.new("UIGradient")
+		
+		gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, MacLib.Color1),
+			ColorSequenceKeypoint.new(0.5, MacLib.Color2),
+			ColorSequenceKeypoint.new(1, MacLib.Color3),
+		})
+		gradient.Rotation = 45
+		gradient.Parent = prompt
+	
+		local tweenService = game:GetService("TweenService")
+		local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
+		local goal = { Rotation = gradient.Rotation + 360 }
+		local tween = tweenService:Create(gradient, info, goal)
+	
+	
+		RunService.RenderStepped:Connect(function()
+			if MacLib.Animation then 
+				tween:Play()
+			else
+				tween:Pause()
+			end
+			Functions:saveColorsToFile()
+			gradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, MacLib.Color1),
+				ColorSequenceKeypoint.new(0.5, MacLib.Color2),
+				ColorSequenceKeypoint.new(1, MacLib.Color3),
+			})
+		end)
 
 		local globalSettingsUIStroke = Instance.new("UIStroke")
 		globalSettingsUIStroke.Name = "GlobalSettingsUIStroke"
@@ -6018,6 +6087,7 @@ function MacLib:Demo()
 
 	MacLib:SetFolder("Maclib")
 	tabs.Settings:InsertConfigSection("Left")
+	tabs.Settings:InsertThemeSection("Right")
 
 	Window.onUnloaded(function()
 		print("Unloaded!")
@@ -6026,5 +6096,8 @@ function MacLib:Demo()
 	tabs.Main:Select()
 	MacLib:LoadAutoLoadConfig()
 end
+
+
+MacLib:Demo()
 
 return MacLib
