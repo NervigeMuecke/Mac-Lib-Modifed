@@ -6097,7 +6097,4 @@ function MacLib:Demo()
 	MacLib:LoadAutoLoadConfig()
 end
 
-
-MacLib:Demo()
-
 return MacLib
