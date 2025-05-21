@@ -1744,10 +1744,40 @@ function library:Init(Config)
 			keybindStraint.MinSize = Vector2.new(30, 22)
 
 			local Shortcuts = {
-				Return = "enter"
+				Return = "enter",
+				MouseButton1 = "LMB",
+				MouseButton2 = "RMB",
+				MouseButton3 = "MMB"
 			}
 
-			keybindButtonLabel.Text = Shortcuts[default.Name] or default.Name
+			local function GetInputName(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					return "MouseButton1"
+				elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+					return "MouseButton2"
+				elseif input.UserInputType == Enum.UserInputType.MouseButton3 then
+					return "MouseButton3"
+				else
+					return input.KeyCode.Name
+				end
+			end
+			
+			local function GetDisplayName(inputName)
+				return Shortcuts[inputName] or inputName
+			end
+
+			local defaultName = ""
+			if typeof(default) == "EnumItem" then
+				if default.EnumType == Enum.KeyCode then
+					defaultName = default.Name
+				elseif default.EnumType == Enum.UserInputType then
+					defaultName = default.Name
+				end
+			else
+				defaultName = tostring(default)
+			end
+			
+			keybindButtonLabel.Text = GetDisplayName(defaultName)
 			TweenWrapper:CreateStyle("keybind", 0.08)
 
 			local NewKeybindSize = TextService:GetTextSize(keybindButtonLabel.Text, keybindButtonLabel.TextSize, keybindButtonLabel.Font, Vector2.new(math.huge,math.huge))
@@ -1764,45 +1794,62 @@ function library:Init(Config)
 			keybindButtonLabel:GetPropertyChangedSignal("Text"):Connect(ResizeKeybind)
 			ResizeKeybind()
 
-			local ChosenKey = default
-			keybindButton.MouseButton1Click:Connect(function()
+			local ChosenKey = {
+				Type = typeof(default) == "EnumItem" and (default.EnumType == Enum.UserInputType and "UserInputType" or "KeyCode") or "KeyCode",
+				Value = defaultName
+			}
+			
+			local function StartListening()
 				keybindButtonLabel.Text = "..."
-				local InputWait = UserInputService.InputBegan:wait()
-				if UserInputService.WindowFocused and InputWait.KeyCode.Name ~= "Unknown" then
-					local Result = Shortcuts[InputWait.KeyCode.Name] or InputWait.KeyCode.Name
-					keybindButtonLabel.Text = Result
-					ChosenKey = InputWait.KeyCode.Name
-				end
-			end)
-
-			keybind.MouseButton1Click:Connect(function()
-				keybindButtonLabel.Text = ". . ."
-				local InputWait = UserInputService.InputBegan:wait()
-				if UserInputService.WindowFocused and InputWait.KeyCode.Name ~= "Unknown" then
-					local Result = Shortcuts[InputWait.KeyCode.Name] or InputWait.KeyCode.Name
-					keybindButtonLabel.Text = Result
-					ChosenKey = InputWait.KeyCode.Name
-				end
-			end)
-
-			--local ChatTextBox = Player.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar
-			if UserInputService.WindowFocused then
-				UserInputService.InputBegan:Connect(function(c, GameProcessed)
-					if GameProcessed then
-						return
+				
+				local connection
+				connection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+					if gameProcessed then return end
+					
+					local inputName = GetInputName(input)
+					local displayName = GetDisplayName(inputName)
+					
+					local inputType = "KeyCode"
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+					input.UserInputType == Enum.UserInputType.MouseButton2 or
+					input.UserInputType == Enum.UserInputType.MouseButton3 then
+						inputType = "UserInputType"
 					end
-					if c.KeyCode.Name == ChosenKey then -- and not ChatTextBox:IsFocused()
-						callback(ChosenKey)
-						return
-					end
+					
+					keybindButtonLabel.Text = displayName
+					ChosenKey = {
+						Type = inputType,
+						Value = inputName
+					}
+					
+					connection:Disconnect()
 				end)
 			end
 
+			keybindButton.MouseButton1Click:Connect(StartListening)
+			keybind.MouseButton1Click:Connect(StartListening)
 
+			UserInputService.InputBegan:Connect(function(input, gameProcessed)
+				if gameProcessed then return end
+				
+				local inputName = GetInputName(input)
+				local inputType = "KeyCode"
+				
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+				input.UserInputType == Enum.UserInputType.MouseButton2 or
+				input.UserInputType == Enum.UserInputType.MouseButton3 then
+					inputType = "UserInputType"
+				end
+				
+				if ChosenKey.Type == inputType and ChosenKey.Value == inputName then
+					callback(inputName)
+				end
+			end)
 
 			local KeybindFunctions = {}
+			
 			function KeybindFunctions:Fire()
-				callback(ChosenKey)
+				callback(ChosenKey.Value)
 				return KeybindFunctions
 			end
 
@@ -1813,9 +1860,30 @@ function library:Init(Config)
 			end
 
 			function KeybindFunctions:SetKey(new)
-				new = new or ChosenKey.Name
-				ChosenKey = new.Name
-				keybindButtonLabel.Text = new.Name
+				if typeof(new) == "EnumItem" then
+					local inputName = ""
+					local inputType = "KeyCode"
+					
+					if new.EnumType == Enum.KeyCode then
+						inputName = new.Name
+						inputType = "KeyCode"
+					elseif new.EnumType == Enum.UserInputType then
+						inputName = new.Name
+						inputType = "UserInputType"
+					end
+					
+					ChosenKey = {
+						Type = inputType,
+						Value = inputName
+					}
+					keybindButtonLabel.Text = GetDisplayName(inputName)
+				elseif typeof(new) == "string" then
+					ChosenKey = {
+						Type = "KeyCode",
+						Value = new
+					}
+					keybindButtonLabel.Text = GetDisplayName(new)
+				end
 				return self
 			end
 
@@ -1834,6 +1902,7 @@ function library:Init(Config)
 				keybindFrame.Visible = true
 				return self
 			end
+			
 			return KeybindFunctions
 		end
 
