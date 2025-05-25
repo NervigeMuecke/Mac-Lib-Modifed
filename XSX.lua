@@ -857,7 +857,7 @@ function library:Init(Config)
 	company.TextColor3 = library.companyColor
 	company.TextSize = 16.000
 	company.TextTransparency = 0.300
- company.RichText = true
+ 	company.RichText = true
 	company.TextXAlignment = Enum.TextXAlignment.Left
 
 	function library:SetCompany(text)
@@ -874,7 +874,7 @@ function library:Init(Config)
 	headerLabel.Size = UDim2.new(1, 0, 1, 0)
 	headerLabel.Font = library.Font
 	headerLabel.Text = library.title
- headerLabel.RichText = true
+ 	headerLabel.RichText = true
 	headerLabel.TextColor3 = Color3.fromRGB(198, 198, 198)
 	headerLabel.TextSize = 16.000
 	headerLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1211,7 +1211,7 @@ function library:Init(Config)
 			return ButtonFunctions
 		end
 
-		function Components:NewSection(text)
+				function Components:NewSection(text)
 			text = text or "section"
 
 			local sectionFrame = Instance.new("Frame", page)
@@ -1281,6 +1281,494 @@ function library:Init(Config)
 			end
 			--
 			return SectionFunctions
+		end
+
+		function Components:NewColorPicker(text, default, callback)
+			text = text or "color picker"
+			default = default or Color3.fromRGB(255, 255, 255)
+			callback = callback or function() end
+
+			local colorPickerFrame = Instance.new("Frame")
+			local colorPickerLabel = Instance.new("TextLabel")
+			local colorPickerPadding = Instance.new("UIPadding")
+			local colorPickerButton = Instance.new("TextButton")
+			local colorPickerCorner = Instance.new("UICorner")
+			local colorPickerPreview = Instance.new("Frame")
+			local colorPickerPreviewCorner = Instance.new("UICorner")
+			
+			local colorPickerPopup = Instance.new("Frame")
+			local colorPickerPopupCorner = Instance.new("UICorner")
+			local colorPickerPopupPadding = Instance.new("UIPadding")
+			local colorPickerPopupLayout = Instance.new("UIListLayout")
+			local colorPickerHue = Instance.new("ImageButton")
+			local colorPickerHueCorner = Instance.new("UICorner")
+			local colorPickerHueGradient = Instance.new("UIGradient")
+			local colorPickerHueSelector = Instance.new("Frame")
+			local colorPickerHueSelectorCorner = Instance.new("UICorner")
+			local colorPickerSV = Instance.new("ImageButton")
+			local colorPickerSVCorner = Instance.new("UICorner")
+			local colorPickerSVGradient1 = Instance.new("UIGradient")
+			local colorPickerSVGradient2 = Instance.new("UIGradient")
+			local colorPickerSVSelector = Instance.new("Frame")
+			local colorPickerSVSelectorCorner = Instance.new("UICorner")
+			local colorPickerInputs = Instance.new("Frame")
+			local colorPickerInputsLayout = Instance.new("UIListLayout")
+			local colorPickerInputR = Instance.new("TextBox")
+			local colorPickerInputG = Instance.new("TextBox")
+			local colorPickerInputB = Instance.new("TextBox")
+			local colorPickerHex = Instance.new("TextBox")
+			local colorPickerHexLabel = Instance.new("TextLabel")
+			local colorPickerCloseButton = Instance.new("TextButton")
+			local colorPickerCloseCorner = Instance.new("UICorner")
+
+			colorPickerFrame.Parent = page
+			colorPickerFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerFrame.BackgroundTransparency = 1.000
+			colorPickerFrame.Size = UDim2.new(0, 396, 0, 24)
+			colorPickerFrame.ZIndex = 1
+
+			colorPickerLabel.Parent = colorPickerFrame
+			colorPickerLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerLabel.BackgroundTransparency = 1.000
+			colorPickerLabel.Size = UDim2.new(0, 396, 0, 24)
+			colorPickerLabel.Font = library.Font
+			colorPickerLabel.Text = text
+			colorPickerLabel.TextColor3 = Color3.fromRGB(190, 190, 190)
+			colorPickerLabel.TextSize = 14.000
+			colorPickerLabel.TextXAlignment = Enum.TextXAlignment.Left
+			colorPickerLabel.RichText = true
+			colorPickerLabel.ZIndex = 2
+
+			colorPickerPadding.Parent = colorPickerLabel
+			colorPickerPadding.PaddingBottom = UDim.new(0, 6)
+			colorPickerPadding.PaddingLeft = UDim.new(0, 2)
+			colorPickerPadding.PaddingRight = UDim.new(0, 6)
+			colorPickerPadding.PaddingTop = UDim.new(0, 6)
+
+			colorPickerButton.Parent = colorPickerFrame
+			colorPickerButton.AnchorPoint = Vector2.new(1, 0.5)
+			colorPickerButton.BackgroundColor3 = library.darkGray
+			colorPickerButton.BackgroundTransparency = library.transparency
+			colorPickerButton.Position = UDim2.new(1, 0, 0.5, 0)
+			colorPickerButton.Size = UDim2.new(0, 100, 0, 20)
+			colorPickerButton.AutoButtonColor = false
+			colorPickerButton.Font = library.Font
+			colorPickerButton.Text = ""
+			colorPickerButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+			colorPickerButton.TextSize = 14.000
+			colorPickerButton.ZIndex = 2
+
+			colorPickerCorner.CornerRadius = UDim.new(0, 2)
+			colorPickerCorner.Parent = colorPickerButton
+
+			colorPickerPreview.Parent = colorPickerButton
+			colorPickerPreview.AnchorPoint = Vector2.new(0, 0.5)
+			colorPickerPreview.BackgroundColor3 = default
+			colorPickerPreview.Position = UDim2.new(0, 4, 0.5, 0)
+			colorPickerPreview.Size = UDim2.new(0, 50, 0, 16)
+			colorPickerPreview.ZIndex = 3
+
+			colorPickerPreviewCorner.CornerRadius = UDim.new(0, 2)
+			colorPickerPreviewCorner.Parent = colorPickerPreview
+
+			local screenGui = page.Parent
+			while screenGui and not screenGui:IsA("ScreenGui") do
+				screenGui = screenGui.Parent
+			end
+			
+			colorPickerPopup.Parent = screenGui or page
+			colorPickerPopup.BackgroundColor3 = library.darkGray or Color3.fromRGB(45, 45, 45)
+			colorPickerPopup.BackgroundTransparency = 0.05
+			colorPickerPopup.Position = UDim2.new(0.5, -150, 0.5, -100)
+			colorPickerPopup.Size = UDim2.new(0, 300, 0, 220)
+			colorPickerPopup.Visible = false
+			colorPickerPopup.ZIndex = 1000
+			colorPickerPopup.BorderSizePixel = 1
+			colorPickerPopup.BorderColor3 = Color3.fromRGB(70, 70, 70)
+
+			colorPickerPopupCorner.CornerRadius = UDim.new(0, 8)
+			colorPickerPopupCorner.Parent = colorPickerPopup
+
+			colorPickerPopupPadding.Parent = colorPickerPopup
+			colorPickerPopupPadding.PaddingBottom = UDim.new(0, 10)
+			colorPickerPopupPadding.PaddingLeft = UDim.new(0, 10)
+			colorPickerPopupPadding.PaddingRight = UDim.new(0, 10)
+			colorPickerPopupPadding.PaddingTop = UDim.new(0, 10)
+
+			colorPickerPopupLayout.Parent = colorPickerPopup
+			colorPickerPopupLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			colorPickerPopupLayout.Padding = UDim.new(0, 8)
+
+			colorPickerCloseButton.Parent = colorPickerPopup
+			colorPickerCloseButton.AnchorPoint = Vector2.new(1, 0)
+			colorPickerCloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+			colorPickerCloseButton.Position = UDim2.new(1, -5, 0, 5)
+			colorPickerCloseButton.Size = UDim2.new(0, 20, 0, 20)
+			colorPickerCloseButton.Font = library.Font or Enum.Font.SourceSans
+			colorPickerCloseButton.Text = "×"
+			colorPickerCloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerCloseButton.TextSize = 16
+			colorPickerCloseButton.ZIndex = 1002
+			colorPickerCloseButton.LayoutOrder = -1
+
+			colorPickerCloseCorner.CornerRadius = UDim.new(0, 4)
+			colorPickerCloseCorner.Parent = colorPickerCloseButton
+
+			colorPickerHue.Name = "HuePicker"
+			colorPickerHue.Parent = colorPickerPopup
+			colorPickerHue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerHue.Size = UDim2.new(1, 0, 0, 25)
+			colorPickerHue.AutoButtonColor = false
+			colorPickerHue.Image = "rbxassetid://4155801252"
+			colorPickerHue.ZIndex = 1001
+			colorPickerHue.LayoutOrder = 1
+
+			colorPickerHueCorner.CornerRadius = UDim.new(0, 4)
+			colorPickerHueCorner.Parent = colorPickerHue
+
+			colorPickerHueGradient.Color = ColorSequence.new{
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+				ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 0, 255)),
+				ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 0, 255)),
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
+				ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 255, 0)),
+				ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 255, 0)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))
+			}
+			colorPickerHueGradient.Rotation = 180
+			colorPickerHueGradient.Parent = colorPickerHue
+
+			colorPickerHueSelector.Name = "Selector"
+			colorPickerHueSelector.Parent = colorPickerHue
+			colorPickerHueSelector.AnchorPoint = Vector2.new(0.5, 0.5)
+			colorPickerHueSelector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerHueSelector.BorderSizePixel = 2
+			colorPickerHueSelector.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			colorPickerHueSelector.Position = UDim2.new(0, 0, 0.5, 0)
+			colorPickerHueSelector.Size = UDim2.new(0, 6, 0, 25)
+			colorPickerHueSelector.ZIndex = 1002
+
+			colorPickerHueSelectorCorner.CornerRadius = UDim.new(0, 3)
+			colorPickerHueSelectorCorner.Parent = colorPickerHueSelector
+
+			colorPickerSV.Name = "SVPicker"
+			colorPickerSV.Parent = colorPickerPopup
+			colorPickerSV.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerSV.Size = UDim2.new(1, 0, 0, 100)
+			colorPickerSV.AutoButtonColor = false
+			colorPickerSV.Image = "rbxassetid://4155801252"
+			colorPickerSV.ZIndex = 1001
+			colorPickerSV.LayoutOrder = 2
+
+			colorPickerSVCorner.CornerRadius = UDim.new(0, 4)
+			colorPickerSVCorner.Parent = colorPickerSV
+
+			colorPickerSVGradient1.Color = ColorSequence.new{
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromHSV(0, 0, 1))
+			}
+			colorPickerSVGradient1.Rotation = 0
+			colorPickerSVGradient1.Parent = colorPickerSV
+
+			colorPickerSVGradient2.Color = ColorSequence.new{
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+			}
+			colorPickerSVGradient2.Transparency = NumberSequence.new{
+				NumberSequenceKeypoint.new(0.00, 1),
+				NumberSequenceKeypoint.new(1.00, 0)
+			}
+			colorPickerSVGradient2.Rotation = 90
+			colorPickerSVGradient2.Parent = colorPickerSV
+
+			colorPickerSVSelector.Name = "Selector"
+			colorPickerSVSelector.Parent = colorPickerSV
+			colorPickerSVSelector.AnchorPoint = Vector2.new(0.5, 0.5)
+			colorPickerSVSelector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerSVSelector.BorderSizePixel = 2
+			colorPickerSVSelector.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			colorPickerSVSelector.Position = UDim2.new(1, 0, 0, 0)
+			colorPickerSVSelector.Size = UDim2.new(0, 10, 0, 10)
+			colorPickerSVSelector.ZIndex = 1002
+
+			colorPickerSVSelectorCorner.CornerRadius = UDim.new(1, 0)
+			colorPickerSVSelectorCorner.Parent = colorPickerSVSelector
+
+			colorPickerInputs.Parent = colorPickerPopup
+			colorPickerInputs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerInputs.BackgroundTransparency = 1.000
+			colorPickerInputs.Size = UDim2.new(1, 0, 0, 25)
+			colorPickerInputs.ZIndex = 1001
+			colorPickerInputs.LayoutOrder = 3
+
+			colorPickerInputsLayout.Parent = colorPickerInputs
+			colorPickerInputsLayout.FillDirection = Enum.FillDirection.Horizontal
+			colorPickerInputsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			colorPickerInputsLayout.Padding = UDim.new(0, 6)
+
+			local function createInput(placeholder)
+				local input = Instance.new("TextBox")
+				input.BackgroundColor3 = library.darkGray or Color3.fromRGB(35, 35, 35)
+				input.BackgroundTransparency = 0
+				input.Size = UDim2.new(0, 45, 1, 0)
+				input.Font = library.Font or Enum.Font.SourceSans
+				input.TextColor3 = Color3.fromRGB(190, 190, 190)
+				input.TextSize = 14
+				input.PlaceholderText = placeholder
+				input.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+				input.Text = ""
+				input.ZIndex = 1002
+				
+				local corner = Instance.new("UICorner", input)
+				corner.CornerRadius = UDim.new(0, 4)
+				
+				local stroke = Instance.new("UIStroke", input)
+				stroke.Thickness = 1
+				stroke.Color = library.lightGray or Color3.fromRGB(70, 70, 70)
+				
+				return input
+			end
+
+			colorPickerInputR = createInput("R")
+			colorPickerInputR.Parent = colorPickerInputs
+			colorPickerInputR.LayoutOrder = 1
+
+			colorPickerInputG = createInput("G")
+			colorPickerInputG.Parent = colorPickerInputs
+			colorPickerInputG.LayoutOrder = 2
+
+			colorPickerInputB = createInput("B")
+			colorPickerInputB.Parent = colorPickerInputs
+			colorPickerInputB.LayoutOrder = 3
+
+			colorPickerHexLabel = Instance.new("TextLabel")
+			colorPickerHexLabel.Parent = colorPickerInputs
+			colorPickerHexLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			colorPickerHexLabel.BackgroundTransparency = 1.000
+			colorPickerHexLabel.Size = UDim2.new(0, 35, 1, 0)
+			colorPickerHexLabel.Font = library.Font or Enum.Font.SourceSans
+			colorPickerHexLabel.Text = "Hex:"
+			colorPickerHexLabel.TextColor3 = Color3.fromRGB(190, 190, 190)
+			colorPickerHexLabel.TextSize = 14
+			colorPickerHexLabel.TextXAlignment = Enum.TextXAlignment.Left
+			colorPickerHexLabel.LayoutOrder = 4
+			colorPickerHexLabel.ZIndex = 1002
+
+			colorPickerHex = createInput("#FFFFFF")
+			colorPickerHex.Parent = colorPickerInputs
+			colorPickerHex.Size = UDim2.new(0, 70, 1, 0)
+			colorPickerHex.LayoutOrder = 5
+
+			local function RGBToHSV(color)
+				return Color3.toHSV(color)
+			end
+
+			local function HSVToRGB(h, s, v)
+				return Color3.fromHSV(h, s, v)
+			end
+
+			local function RGBToHex(color)
+				local r = math.floor(color.R * 255)
+				local g = math.floor(color.G * 255)
+				local b = math.floor(color.B * 255)
+				return string.format("#%02X%02X%02X", r, g, b)
+			end
+
+			local function HexToRGB(hex)
+				hex = hex:gsub("#","")
+				if #hex == 6 then
+					return Color3.fromRGB(
+						tonumber("0x"..hex:sub(1,2)) or 255,
+						tonumber("0x"..hex:sub(3,4)) or 255,
+						tonumber("0x"..hex:sub(5,6)) or 255
+					)
+				end
+				return Color3.fromRGB(255, 255, 255)
+			end
+
+			local currentColor = default
+			local h, s, v = RGBToHSV(default)
+
+			local function updateColor(newColor, updateInputs)
+				currentColor = newColor
+				colorPickerPreview.BackgroundColor3 = newColor
+				h, s, v = RGBToHSV(newColor)
+				
+				if updateInputs then
+					colorPickerInputR.Text = tostring(math.floor(newColor.R * 255))
+					colorPickerInputG.Text = tostring(math.floor(newColor.G * 255))
+					colorPickerInputB.Text = tostring(math.floor(newColor.B * 255))
+					colorPickerHex.Text = RGBToHex(newColor)
+				end
+				
+				callback(newColor)
+			end
+
+			local function updateFromHSV()
+				local newColor = HSVToRGB(h, s, v)
+				updateColor(newColor, true)
+			end
+
+			local function updateFromRGB()
+				local r = tonumber(colorPickerInputR.Text) or 0
+				local g = tonumber(colorPickerInputG.Text) or 0
+				local b = tonumber(colorPickerInputB.Text) or 0
+				local newColor = Color3.fromRGB(
+					math.clamp(r, 0, 255),
+					math.clamp(g, 0, 255),
+					math.clamp(b, 0, 255)
+				)
+				h, s, v = RGBToHSV(newColor)
+				updateColor(newColor, false)
+				colorPickerHex.Text = RGBToHex(newColor)
+			end
+
+			local function updateFromHex()
+				local hex = colorPickerHex.Text
+				if #hex == 7 and hex:match("#%x%x%x%x%x%x") then
+					local newColor = HexToRGB(hex)
+					h, s, v = RGBToHSV(newColor)
+					updateColor(newColor, true)
+				end
+			end
+
+			local function updateSelectors()
+				colorPickerHueSelector.Position = UDim2.new(h, 0, 0.5, 0)
+				colorPickerSVSelector.Position = UDim2.new(s, 0, 1 - v, 0)
+				colorPickerSVGradient1.Color = ColorSequence.new{
+					ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+					ColorSequenceKeypoint.new(1.00, HSVToRGB(h, 1, 1))
+				}
+			end
+
+			updateColor(default, true)
+			updateSelectors()
+
+			colorPickerInputR.FocusLost:Connect(updateFromRGB)
+			colorPickerInputG.FocusLost:Connect(updateFromRGB)
+			colorPickerInputB.FocusLost:Connect(updateFromRGB)
+			colorPickerHex.FocusLost:Connect(updateFromHex)
+
+			local UserInputService = game:GetService("UserInputService")
+			local isDraggingHue = false
+			local isDraggingSV = false
+
+			local function updateHueFromPosition(position)
+				local x = (position.X - colorPickerHue.AbsolutePosition.X) / colorPickerHue.AbsoluteSize.X
+				h = math.clamp(x, 0, 1)
+				updateFromHSV()
+				updateSelectors()
+			end
+
+			local function updateSVFromPosition(position)
+				local x = (position.X - colorPickerSV.AbsolutePosition.X) / colorPickerSV.AbsoluteSize.X
+				local y = (position.Y - colorPickerSV.AbsolutePosition.Y) / colorPickerSV.AbsoluteSize.Y
+				s = math.clamp(x, 0, 1)
+				v = math.clamp(1 - y, 0, 1)
+				updateFromHSV()
+				updateSelectors()
+			end
+
+			colorPickerHue.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isDraggingHue = true
+					updateHueFromPosition(input.Position)
+				end
+			end)
+
+			colorPickerSV.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isDraggingSV = true
+					updateSVFromPosition(input.Position)
+				end
+			end)
+
+			UserInputService.InputChanged:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseMovement then
+					if isDraggingHue then
+						updateHueFromPosition(input.Position)
+					elseif isDraggingSV then
+						updateSVFromPosition(input.Position)
+					end
+				end
+			end)
+
+			UserInputService.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isDraggingHue = false
+					isDraggingSV = false
+				end
+			end)
+
+			local function openPopup()
+				colorPickerPopup.Visible = true
+				colorPickerPopup.Position = UDim2.new(0.5, -colorPickerPopup.Size.X.Offset/2, 0.5, -colorPickerPopup.Size.Y.Offset/2)
+			end
+
+			local function closePopup()
+				colorPickerPopup.Visible = false
+				isDraggingHue = false
+				isDraggingSV = false
+			end
+
+			colorPickerButton.MouseButton1Click:Connect(openPopup)
+			colorPickerCloseButton.MouseButton1Click:Conneact(closePopup)
+
+			local ColorPickerFunctions = {}
+			
+			function ColorPickerFunctions:SetColor(color, noCallback)
+				if typeof(color) == "Color3" then
+					updateColor(color, true)
+					updateSelectors()
+					if not noCallback then
+						callback(color)
+					end
+				end
+				return self
+			end
+			
+			function ColorPickerFunctions:GetColor()
+				return currentColor
+			end
+			
+			function ColorPickerFunctions:SetFunction(newCallback)
+				callback = newCallback or function() end
+				return self
+			end
+			
+			function ColorPickerFunctions:SetText(newText)
+				newText = newText or text
+				colorPickerLabel.Text = newText
+				return self
+			end
+			
+			function ColorPickerFunctions:Hide()
+				colorPickerFrame.Visible = false
+				return self
+			end
+			
+			function ColorPickerFunctions:Show()
+				colorPickerFrame.Visible = true
+				return self
+			end
+			
+			function ColorPickerFunctions:Remove()
+				colorPickerFrame:Destroy()
+				colorPickerPopup:Destroy()
+				return self
+			end
+
+			function ColorPickerFunctions:OpenPopup()
+				openPopup()
+				return self
+			end
+
+			function ColorPickerFunctions:ClosePopup()
+				closePopup()
+				return self
+			end
+
+			return ColorPickerFunctions
 		end
 
 		function Components:NewToggle(text, default, callback, loop, ignorepanic)
@@ -2718,8 +3206,7 @@ function library:Init(Config)
 		return self
 	end
 
-
 	return library
+	
 end
-
 return library
