@@ -857,7 +857,7 @@ function library:Init(Config)
 	company.TextColor3 = library.companyColor
 	company.TextSize = 16.000
 	company.TextTransparency = 0.300
- company.RichText = true
+ 	company.RichText = true
 	company.TextXAlignment = Enum.TextXAlignment.Left
 
 	function library:SetCompany(text)
@@ -874,7 +874,7 @@ function library:Init(Config)
 	headerLabel.Size = UDim2.new(1, 0, 1, 0)
 	headerLabel.Font = library.Font
 	headerLabel.Text = library.title
- headerLabel.RichText = true
+ 	headerLabel.RichText = true
 	headerLabel.TextColor3 = Color3.fromRGB(198, 198, 198)
 	headerLabel.TextSize = 16.000
 	headerLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1250,6 +1250,7 @@ function library:Init(Config)
 			colorPickerFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			colorPickerFrame.BackgroundTransparency = 1.000
 			colorPickerFrame.Size = UDim2.new(0, 396, 0, 24)
+			colorPickerFrame.ZIndex = 1
 
 			colorPickerLabel.Parent = colorPickerFrame
 			colorPickerLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1261,6 +1262,7 @@ function library:Init(Config)
 			colorPickerLabel.TextSize = 14.000
 			colorPickerLabel.TextXAlignment = Enum.TextXAlignment.Left
 			colorPickerLabel.RichText = true
+			colorPickerLabel.ZIndex = 2
 
 			colorPickerPadding.Parent = colorPickerLabel
 			colorPickerPadding.PaddingBottom = UDim.new(0, 6)
@@ -1279,6 +1281,7 @@ function library:Init(Config)
 			colorPickerButton.Text = ""
 			colorPickerButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 			colorPickerButton.TextSize = 14.000
+			colorPickerButton.ZIndex = 2
 
 			colorPickerCorner.CornerRadius = UDim.new(0, 2)
 			colorPickerCorner.Parent = colorPickerButton
@@ -1288,6 +1291,7 @@ function library:Init(Config)
 			colorPickerPreview.BackgroundColor3 = default
 			colorPickerPreview.Position = UDim2.new(0, 4, 0.5, 0)
 			colorPickerPreview.Size = UDim2.new(0, 50, 0, 16)
+			colorPickerPreview.ZIndex = 3
 
 			colorPickerPreviewCorner.CornerRadius = UDim.new(0, 2)
 			colorPickerPreviewCorner.Parent = colorPickerPreview
@@ -1298,6 +1302,7 @@ function library:Init(Config)
 			colorPickerUI.Position = UDim2.new(0, 0, 1, 4)
 			colorPickerUI.Size = UDim2.new(1, 0, 0, 150)
 			colorPickerUI.Visible = false
+			colorPickerUI.ZIndex = 100 
 
 			colorPickerUICorner.CornerRadius = UDim.new(0, 2)
 			colorPickerUICorner.Parent = colorPickerUI
@@ -1318,6 +1323,7 @@ function library:Init(Config)
 			colorPickerHue.Size = UDim2.new(1, 0, 0, 20)
 			colorPickerHue.AutoButtonColor = false
 			colorPickerHue.Image = "rbxassetid://4155801252"
+			colorPickerHue.ZIndex = 101
 
 			colorPickerHueCorner.CornerRadius = UDim.new(0, 2)
 			colorPickerHueCorner.Parent = colorPickerHue
@@ -1342,6 +1348,7 @@ function library:Init(Config)
 			colorPickerHueSelector.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			colorPickerHueSelector.Position = UDim2.new(0, 0, 0.5, 0)
 			colorPickerHueSelector.Size = UDim2.new(0, 4, 0, 20)
+			colorPickerHueSelector.ZIndex = 102
 
 			colorPickerHueSelectorCorner.CornerRadius = UDim.new(0, 2)
 			colorPickerHueSelectorCorner.Parent = colorPickerHueSelector
@@ -1352,6 +1359,7 @@ function library:Init(Config)
 			colorPickerSV.Size = UDim2.new(1, 0, 0, 80)
 			colorPickerSV.AutoButtonColor = false
 			colorPickerSV.Image = "rbxassetid://4155801252"
+			colorPickerSV.ZIndex = 101
 
 			colorPickerSVCorner.CornerRadius = UDim.new(0, 2)
 			colorPickerSVCorner.Parent = colorPickerSV
@@ -1382,7 +1390,7 @@ function library:Init(Config)
 			colorPickerSVSelector.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			colorPickerSVSelector.Position = UDim2.new(1, 0, 0, 0)
 			colorPickerSVSelector.Size = UDim2.new(0, 8, 0, 8)
-			colorPickerSVSelector.ZIndex = 2
+			colorPickerSVSelector.ZIndex = 102
 
 			colorPickerSVSelectorCorner.CornerRadius = UDim.new(1, 0)
 			colorPickerSVSelectorCorner.Parent = colorPickerSVSelector
@@ -1391,6 +1399,7 @@ function library:Init(Config)
 			colorPickerInputs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			colorPickerInputs.BackgroundTransparency = 1.000
 			colorPickerInputs.Size = UDim2.new(1, 0, 0, 20)
+			colorPickerInputs.ZIndex = 101
 
 			colorPickerInputsLayout.Parent = colorPickerInputs
 			colorPickerInputsLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -1408,6 +1417,7 @@ function library:Init(Config)
 				input.PlaceholderText = placeholder
 				input.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
 				input.Text = ""
+				input.ZIndex = 102
 				
 				local corner = Instance.new("UICorner", input)
 				corner.CornerRadius = UDim.new(0, 2)
@@ -1442,6 +1452,7 @@ function library:Init(Config)
 			colorPickerHexLabel.TextSize = 14
 			colorPickerHexLabel.TextXAlignment = Enum.TextXAlignment.Left
 			colorPickerHexLabel.LayoutOrder = 4
+			colorPickerHexLabel.ZIndex = 102
 
 			colorPickerHex = createInput("#FFFFFF")
 			colorPickerHex.Parent = colorPickerInputs
@@ -1465,11 +1476,14 @@ function library:Init(Config)
 
 			local function HexToRGB(hex)
 				hex = hex:gsub("#","")
-				return Color3.fromRGB(
-					tonumber("0x"..hex:sub(1,2)),
-					tonumber("0x"..hex:sub(3,4)),
-					tonumber("0x"..hex:sub(5,6))
-				)
+				if #hex == 6 then
+					return Color3.fromRGB(
+						tonumber("0x"..hex:sub(1,2)) or 255,
+						tonumber("0x"..hex:sub(3,4)) or 255,
+						tonumber("0x"..hex:sub(5,6)) or 255
+					)
+				end
+				return Color3.fromRGB(255, 255, 255)
 			end
 
 			local currentColor = default
@@ -1535,68 +1549,56 @@ function library:Init(Config)
 			colorPickerInputB.FocusLost:Connect(updateFromRGB)
 			colorPickerHex.FocusLost:Connect(updateFromHex)
 
-			local function hueInput(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					local x = (input.Position.X - colorPickerHue.AbsolutePosition.X) / colorPickerHue.AbsoluteSize.X
-					h = math.clamp(x, 0, 1)
-					updateFromHSV()
-					updateSelectors()
-					
-					local moveConnection
-					local releaseConnection
-					
-					moveConnection = input.Changed:Connect(function()
-						if input.UserInputState == Enum.UserInputState.Change then
-							local x = (input.Position.X - colorPickerHue.AbsolutePosition.X) / colorPickerHue.AbsoluteSize.X
-							h = math.clamp(x, 0, 1)
-							updateFromHSV()
-							updateSelectors()
-						end
-					end)
-					
-					releaseConnection = input.Changed:Connect(function()
-						if input.UserInputState == Enum.UserInputState.End then
-							moveConnection:Disconnect()
-							releaseConnection:Disconnect()
-						end
-					end)
-				end
+			local UserInputService = game:GetService("UserInputService")
+			local isDraggingHue = false
+			local isDraggingSV = false
+
+			local function updateHueFromPosition(position)
+				local x = (position.X - colorPickerHue.AbsolutePosition.X) / colorPickerHue.AbsoluteSize.X
+				h = math.clamp(x, 0, 1)
+				updateFromHSV()
+				updateSelectors()
 			end
 
-			local function svInput(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					local x = (input.Position.X - colorPickerSV.AbsolutePosition.X) / colorPickerSV.AbsoluteSize.X
-					local y = (input.Position.Y - colorPickerSV.AbsolutePosition.Y) / colorPickerSV.AbsoluteSize.Y
-					s = math.clamp(x, 0, 1)
-					v = math.clamp(1 - y, 0, 1)
-					updateFromHSV()
-					updateSelectors()
-					
-					local moveConnection
-					local releaseConnection
-					
-					moveConnection = input.Changed:Connect(function()
-						if input.UserInputState == Enum.UserInputState.Change then
-							local x = (input.Position.X - colorPickerSV.AbsolutePosition.X) / colorPickerSV.AbsoluteSize.X
-							local y = (input.Position.Y - colorPickerSV.AbsolutePosition.Y) / colorPickerSV.AbsoluteSize.Y
-							s = math.clamp(x, 0, 1)
-							v = math.clamp(1 - y, 0, 1)
-							updateFromHSV()
-							updateSelectors()
-						end
-					end)
-					
-					releaseConnection = input.Changed:Connect(function()
-						if input.UserInputState == Enum.UserInputState.End then
-							moveConnection:Disconnect()
-							releaseConnection:Disconnect()
-						end
-					end)
-				end
+			local function updateSVFromPosition(position)
+				local x = (position.X - colorPickerSV.AbsolutePosition.X) / colorPickerSV.AbsoluteSize.X
+				local y = (position.Y - colorPickerSV.AbsolutePosition.Y) / colorPickerSV.AbsoluteSize.Y
+				s = math.clamp(x, 0, 1)
+				v = math.clamp(1 - y, 0, 1)
+				updateFromHSV()
+				updateSelectors()
 			end
 
-			colorPickerHue.InputBegan:Connect(hueInput)
-			colorPickerSV.InputBegan:Connect(svInput)
+			colorPickerHue.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isDraggingHue = true
+					updateHueFromPosition(input.Position)
+				end
+			end)
+
+			colorPickerSV.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isDraggingSV = true
+					updateSVFromPosition(input.Position)
+				end
+			end)
+
+			UserInputService.InputChanged:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseMovement then
+					if isDraggingHue then
+						updateHueFromPosition(input.Position)
+					elseif isDraggingSV then
+						updateSVFromPosition(input.Position)
+					end
+				end
+			end)
+
+			UserInputService.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isDraggingHue = false
+					isDraggingSV = false
+				end
+			end)
 
 			local isPickerOpen = false
 			colorPickerButton.MouseButton1Click:Connect(function()
@@ -1606,6 +1608,27 @@ function library:Init(Config)
 					colorPickerFrame.Size = UDim2.new(0, 396, 0, 180)
 				else
 					colorPickerFrame.Size = UDim2.new(0, 396, 0, 24)
+				end
+			end)
+
+			UserInputService.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 and isPickerOpen then
+					local mousePos = input.Position
+					local uiPos = colorPickerUI.AbsolutePosition
+					local uiSize = colorPickerUI.AbsoluteSize
+					
+					if mousePos.X < uiPos.X or mousePos.X > uiPos.X + uiSize.X or 
+					mousePos.Y < uiPos.Y or mousePos.Y > uiPos.Y + uiSize.Y then
+						local buttonPos = colorPickerButton.AbsolutePosition
+						local buttonSize = colorPickerButton.AbsoluteSize
+						
+						if mousePos.X < buttonPos.X or mousePos.X > buttonPos.X + buttonSize.X or 
+						mousePos.Y < buttonPos.Y or mousePos.Y > buttonPos.Y + buttonSize.Y then
+							isPickerOpen = false
+							colorPickerUI.Visible = false
+							colorPickerFrame.Size = UDim2.new(0, 396, 0, 24)
+						end
+					end
 				end
 			end)
 
@@ -1653,78 +1676,6 @@ function library:Init(Config)
 			end
 
 			return ColorPickerFunctions
-		end
-
-		function Components:NewSection(text)
-			text = text or "section"
-
-			local sectionFrame = Instance.new("Frame", page)
-			local sectionLayout = Instance.new("UIListLayout")
-			local sectionLabel = Instance.new("TextLabel")
-			local sectionPadding = Instance.new("UIPadding", sectionFrame)
-
-			local UICorner = Instance.new("UICorner", sectionFrame)
-			UICorner.CornerRadius = UDim.new(0, 3)
-
-			sectionFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-			sectionFrame.BackgroundTransparency = 0.500
-			sectionFrame.BorderSizePixel = 0
-			sectionFrame.ClipsDescendants = true
-			sectionFrame.Size = UDim2.new(0, 396, 0, 19)
-
-			sectionPadding.PaddingBottom = UDim.new(0, 6)
-			sectionPadding.PaddingLeft = UDim.new(0, 3)
-			sectionPadding.PaddingRight = UDim.new(0, 3)
-			sectionPadding.PaddingTop = UDim.new(0, 6)
-
-			sectionLayout.Parent = sectionFrame
-			sectionLayout.FillDirection = Enum.FillDirection.Horizontal
-			sectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			sectionLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			sectionLayout.Padding = UDim.new(0, 4)
-
-			sectionLabel.Parent = sectionFrame
-			sectionLabel.BackgroundColor3 = library.headerColor 
-			sectionLabel.BackgroundTransparency = 1.000
-			sectionLabel.ClipsDescendants = true
-			sectionLabel.Position = UDim2.new(0.0252525248, 0, 0.020833334, 0)
-			sectionLabel.Size = UDim2.new(1, 0, 1, 0)
-			sectionLabel.Font = library.Font
-			sectionLabel.LineHeight = 1
-			sectionLabel.Text = text
-			sectionLabel.TextColor3 = Color3.fromRGB(190, 190, 190)
-			sectionLabel.TextSize = 14.000
-			sectionLabel.TextXAlignment = Enum.TextXAlignment.Left
-			sectionLabel.RichText = true
-
-
-			local NewSectionSize = TextService:GetTextSize(sectionLabel.Text, sectionLabel.TextSize, sectionLabel.Font, Vector2.new(math.huge,math.huge))
-			sectionLabel.Size = UDim2.new(0, NewSectionSize.X, 0, 18)
-
-			local SectionFunctions = {}
-			function SectionFunctions:SetText(new)
-				new = new or text
-				sectionLabel.Text = new
-
-				local NewSectionSize = TextService:GetTextSize(sectionLabel.Text, sectionLabel.TextSize, sectionLabel.Font, Vector2.new(math.huge,math.huge))
-				sectionLabel.Size = UDim2.new(0, NewSectionSize.X, 0, 18)
-
-				return self
-			end
-			function SectionFunctions:Hide()
-				sectionFrame.Visible = false
-				return self
-			end
-			function SectionFunctions:Show()
-				sectionFrame.Visible = true
-				return self
-			end
-			function SectionFunctions:Remove()
-				sectionFrame:Destroy()
-				return self
-			end
-			--
-			return SectionFunctions
 		end
 
 		function Components:NewToggle(text, default, callback, loop, ignorepanic)
