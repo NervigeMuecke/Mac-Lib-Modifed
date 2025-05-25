@@ -1331,7 +1331,7 @@ function library:Init(Config)
 				ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 255, 0)),
 				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))
 			}
-			colorPickerHueGradient.Rotation = 0
+			colorPickerHueGradient.Rotation = 180
 			colorPickerHueGradient.Parent = colorPickerHue
 
 			colorPickerHueSelector.Name = "Selector"
