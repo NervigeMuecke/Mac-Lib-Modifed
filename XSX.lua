@@ -1712,7 +1712,7 @@ function library:Init(Config)
 			end
 
 			colorPickerButton.MouseButton1Click:Connect(openPopup)
-			colorPickerCloseButton.MouseButton1Click:Conneact(closePopup)
+			colorPickerCloseButton.MouseButton1Click:Connect(closePopup)
 
 			local ColorPickerFunctions = {}
 			
