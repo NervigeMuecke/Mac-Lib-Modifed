@@ -27,8 +27,8 @@ local hiddenUI = get_hidden_gui or gethui or function(a)return CoreGui end
 -- / Defaults 
 local OptionStates = {} -- Used for panic
 local library = {
-	title = "Zypherion",
-	company = "Zypherion",
+	title = "Z3US",
+	company = "Z3US",
 	
 	RainbowEnabled = true,
 	BlurEffect = true,
@@ -60,16 +60,16 @@ local library = {
 
 local function Warn(...)
 	if not library.Debug then return end
-	warn("Zypherion:", ...)
+	warn("Z3US:", ...)
 end
 
 -- / Remove the previous interface
-if _G.ZypherionGUI then
+if _G.Z3USGUI then
 	pcall(function()
-		_G.ZypherionGUI:Remove()
+		_G.Z3USGUI:Remove()
 	end)
 end
-_G.ZypherionGUI = library
+_G.Z3USGUI = library
 
 -- / Blur effect
 local Blur = Instance.new("BlurEffect", CurrentCam)
