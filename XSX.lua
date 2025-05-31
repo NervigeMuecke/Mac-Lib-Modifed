@@ -27,8 +27,8 @@ local hiddenUI = get_hidden_gui or gethui or function(a)return CoreGui end
 -- / Defaults 
 local OptionStates = {} -- Used for panic
 local library = {
-	title = "Z3US",
-	company = "Z3US",
+	title = "Zypherion",
+	company = "Zypherion",
 	
 	RainbowEnabled = true,
 	BlurEffect = true,
@@ -58,26 +58,18 @@ local library = {
 	}
 }
 
-library.Config = {
-    FolderName = "Z3US_Configs",
-    FileExtension = ".zcfg",
-    AutoSave = false,
-    AutoLoad = false,
-    CurrentConfig = nil
-}
-
 local function Warn(...)
 	if not library.Debug then return end
-	warn("Z3US:", ...)
+	warn("Zypherion:", ...)
 end
 
 -- / Remove the previous interface
-if _G.Z3USGUI then
+if _G.ZypherionGUI then
 	pcall(function()
-		_G.Z3USGUI:Remove()
+		_G.ZypherionGUI:Remove()
 	end)
 end
-_G.Z3USGUI = library
+_G.ZypherionGUI = library
 
 -- / Blur effect
 local Blur = Instance.new("BlurEffect", CurrentCam)
@@ -325,177 +317,6 @@ end
 --/ Watermark library
 TweenWrapper:CreateStyle("wm", 0.24)
 TweenWrapper:CreateStyle("wm_2", 0.04)
-
-function library:EnsureConfigDirectory()
-    if not isfolder then return end
-    if not isfolder(self.Config.FolderName) then
-        makefolder(self.Config.FolderName)
-    end
-end
-
-function library:GetConfigs()
-    if not isfolder then return {} end
-    self:EnsureConfigDirectory()
-    local files = listfiles(self.Config.FolderName)
-    local configs = {}
-    
-    for _, file in ipairs(files) do
-        if file:sub(-#self.Config.FileExtension) == self.Config.FileExtension then
-            table.insert(configs, file:match(".*/(.*)"..self.Config.FileExtension.."$"))
-        end
-    end
-    
-    return configs
-end
-
-function library:SaveConfig(configName)
-    if not writefile then return false end
-    configName = configName or self.Config.CurrentConfig or "default"
-    if not configName:match("%w+") then return false end
-    
-    self:EnsureConfigDirectory()
-    
-    local configData = {
-        version = 1,
-        settings = {},
-        uiState = {
-            position = background.Position,
-            size = background.Size,
-            visible = background.Visible
-        }
-    }
-    
-    -- Save all option states
-    for element, data in pairs(OptionStates) do
-        if element and element.Parent then
-            local path = {}
-            local current = element
-            while current and current ~= screen do
-                table.insert(path, 1, current.Name)
-                current = current.Parent
-            end
-            
-            configData.settings[table.concat(path, ".")] = {
-                value = data[1],
-                type = typeof(data[1])
-            }
-        end
-    end
-    
-    -- Save tab state
-    if TabLibrary.CurrentTab then
-        configData.currentTab = TabLibrary.CurrentTab
-    end
-    
-    local success, json = pcall(function()
-        return game:GetService("HttpService"):JSONEncode(configData)
-    end)
-    
-    if success then
-        writefile(self.Config.FolderName.."/"..configName..self.Config.FileExtension, json)
-        self.Config.CurrentConfig = configName
-        return true
-    end
-    
-    return false
-end
-
--- Load settings from a config file
-function library:LoadConfig(configName)
-    if not readfile or not isfile then return false end
-    configName = configName or self.Config.CurrentConfig or "default"
-    local filePath = self.Config.FolderName.."/"..configName..self.Config.FileExtension
-    
-    if not isfile(filePath) then return false end
-    
-    local success, configData = pcall(function()
-        return game:GetService("HttpService"):JSONDecode(readfile(filePath))
-    end)
-    
-    if not success or not configData or not configData.settings then return false end
-    
-    -- Apply UI state
-    if configData.uiState then
-        if configData.uiState.position then
-            background.Position = configData.uiState.position
-        end
-        if configData.uiState.size then
-            background.Size = configData.uiState.size
-        end
-        if configData.uiState.visible ~= nil then
-            background.Visible = configData.uiState.visible
-        end
-    end
-    
-    -- Apply settings
-    for path, data in pairs(configData.settings) do
-        local elements = path:split(".")
-        local current = screen
-        
-        for i, name in ipairs(elements) do
-            local found = false
-            for _, child in ipairs(current:GetChildren()) do
-                if child.Name == name then
-                    current = child
-                    found = true
-                    break
-                end
-            end
-            
-            if not found then
-                current = nil
-                break
-            end
-        end
-        
-        if current and OptionStates[current] then
-            local func = OptionStates[current][2].Set
-            if func then
-                func(OptionStates[current][2], data.value)
-            end
-        end
-    end
-    
-    -- Apply current tab
-    if configData.currentTab then
-        for _, tab in ipairs(tabButtons:GetChildren()) do
-            if tab:IsA("TextButton") and tab.Text == configData.currentTab then
-                tab:Activate()
-                break
-            end
-        end
-    end
-    
-    self.Config.CurrentConfig = configName
-    return true
-end
-
-function library:DeleteConfig(configName)
-    if not delfile then return false end
-    configName = configName or self.Config.CurrentConfig
-    if not configName then return false end
-    
-    local filePath = self.Config.FolderName.."/"..configName..self.Config.FileExtension
-    if not isfile(filePath) then return false end
-    
-    delfile(filePath)
-    
-    if self.Config.CurrentConfig == configName then
-        self.Config.CurrentConfig = nil
-    end
-    
-    return true
-end
-
-local oldShowUI = library.ShowUI
-function library:ShowUI(Visible)
-    oldShowUI(self, Visible)
-    
-    if self.Config.AutoSave and not Visible and self.Config.CurrentConfig then
-        self:SaveConfig()
-    end
-end
-
 
 function library:Init(Config)
 	--/ Apply new config
@@ -3378,22 +3199,14 @@ function library:Init(Config)
 		return Components
 	end
 
-	if Config and Config.AutoLoad then
-        self.Config.AutoLoad = Config.AutoLoad
-    end
-    
-    if self.Config.AutoLoad and self.Config.CurrentConfig then
-        self:LoadConfig()
-    end
-
 	function library:Remove()
 		screen:Destroy()
 		library:Panic()
 
 		return self
 	end
-	library.Config.AutoSave = true
-	library.Config.AutoLoad = true
+
 	return library
+	
 end
 return library
