@@ -4903,6 +4903,7 @@ function Compkiller:SetTheme(name)
             ["Toggle"] = Color3.new(0, 0.613793, 0.220119),
             HighStrokeColor = Color3.new(0, 0.241379, 0.186445),
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Default" then
         Compkiller.Colors = {
             Highlight = Color3.fromRGB(19, 0, 255),
@@ -4918,6 +4919,7 @@ function Compkiller:SetTheme(name)
             LineColor = Color3.fromRGB(65, 65, 65),
             HighStrokeColor = Color3.fromRGB(55, 56, 63),
         }
+		Compkiller.Logo = "rbxassetid://79039993026788"
     elseif name == "Dark Blue" then
         Compkiller.Colors = {
             ["BGDBColor"] = Color3.new(0.0393817, 0.0754204, 0.165517),
@@ -4933,6 +4935,7 @@ function Compkiller:SetTheme(name)
             ["SwitchColor"] = Color3.new(1, 1, 1),
             ["Toggle"] = Color3.new(0.054902, 0.463935, 0.835294)
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Purple Rose" then
         Compkiller.Colors = {
             ["BGDBColor"] = Color3.new(0.0459068, 0.030321, 0.117241),
@@ -4948,6 +4951,7 @@ function Compkiller:SetTheme(name)
             ["SwitchColor"] = Color3.new(1, 1, 1),
             ["Toggle"] = Color3.new(0.835294, 0.054902, 0.248654)
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Skeet" then        
         Compkiller.Colors = {
             ["BGDBColor"] = Color3.new(0.114578, 0.125191, 0.151724),
@@ -4963,6 +4967,7 @@ function Compkiller:SetTheme(name)
             ["SwitchColor"] = Color3.new(1, 1, 1),
             ["Toggle"] = Color3.new(0, 0.324138, 0.10283)
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Midnight Purple" then
         Compkiller.Colors = {
             Highlight = Color3.fromRGB(162, 0, 255),
@@ -4978,6 +4983,7 @@ function Compkiller:SetTheme(name)
             LineColor = Color3.fromRGB(25, 0, 50),
             HighStrokeColor = Color3.fromRGB(60, 0, 110),
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Cyberpunk" then
         Compkiller.Colors = {
             Highlight = Color3.fromRGB(255, 0, 119),
@@ -4993,6 +4999,7 @@ function Compkiller:SetTheme(name)
             LineColor = Color3.fromRGB(50, 50, 100),
             HighStrokeColor = Color3.fromRGB(60, 60, 120),
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Sunset" then
         Compkiller.Colors = {
             Highlight = Color3.fromRGB(255, 100, 0),
@@ -5008,6 +5015,7 @@ function Compkiller:SetTheme(name)
             LineColor = Color3.fromRGB(40, 20, 20),
             HighStrokeColor = Color3.fromRGB(80, 40, 40),
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Dracula" then
         Compkiller.Colors = {
             Highlight = Color3.fromRGB(189, 147, 249),
@@ -5023,6 +5031,7 @@ function Compkiller:SetTheme(name)
             LineColor = Color3.fromRGB(30, 32, 40),
             HighStrokeColor = Color3.fromRGB(70, 74, 100),
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     elseif name == "Ocean" then
         Compkiller.Colors = {
             Highlight = Color3.fromRGB(0, 200, 255),
@@ -5038,6 +5047,7 @@ function Compkiller:SetTheme(name)
             LineColor = Color3.fromRGB(0, 30, 60),
             HighStrokeColor = Color3.fromRGB(0, 70, 110),
         }
+		Compkiller.Logo = "rbxassetid://92661965333918"
     end
 
     Compkiller:RefreshCurrentColor()
