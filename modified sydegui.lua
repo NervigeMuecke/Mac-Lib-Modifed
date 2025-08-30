@@ -13,7 +13,7 @@ local sharedModule = {}
 local resizing = false
 
 local Loader =          game:GetObjects("rbxassetid://110221114597158")[1]
-local Library =         game:GetObjects("rbxassetid://70958693411444")[1]
+local Library =         game:GetObjects("rbxassetid://139043822437199")[1]
 
 Library.Enabled = false
 local loaded = false
