@@ -4507,6 +4507,10 @@ function syde:Init(library)
 				dropdown.dropHolder.drop.Container.Visible = true
 				dropdown.dropHolder.drop.Search.Visible = true
 
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    dropdown.dropHolder.drop.Search.TextBox.Text = "Search Currently Broken"
+                end)
+
 				tweenservice:Create(dropdown, TweenInfo.new(1.34, Enum.EasingStyle.Quint), { Size = UDim2.new(1, -15, 0, 300) }):Play()
 				tweenservice:Create(dropdown.dropHolder.drop.Container, TweenInfo.new(1, Enum.EasingStyle.Quint), { Size = UDim2.new(1, -20, 1, -75) }):Play()
 				tweenservice:Create(dropdown.dropHolder.drop.void, TweenInfo.new(1.34, Enum.EasingStyle.Exponential), { BackgroundTransparency = 0 }):Play()
