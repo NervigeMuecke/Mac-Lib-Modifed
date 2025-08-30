@@ -1188,7 +1188,7 @@ local WINDOW = UI.lib
 local TOPBAR = WINDOW.Top
 local TABS = WINDOW.Tab.ScrollingFrame
 local PAGES = WINDOW.Pages
-local settingsOpen = true
+local settingsOpen = false
 local UIClosed = false
 local Connected = false
 local UserInfoDisabled = false
@@ -1491,7 +1491,7 @@ function syde:Init(library)
 	-- got lazy
 	local expand = TOPBAR.UHolder:WaitForChild('expand')
 
-	local expanded = false
+	local expanded = true
 
 	if not expanded then
 		tweenservice:Create(TOPBAR.UHolder, TweenInfo.new(1.4, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 70,1, 0)}):Play()
