@@ -23,7 +23,7 @@ local syde = {
 	theme = {
 		['Accent'] = Color3.fromRGB(255, 255, 255);
 		['HitBox'] = Color3.fromRGB(255, 255, 255);
-		['DropShadow']   = Color3.fromRGB(0, 0, 0);
+		['DropShadow']   = Color3.fromRGB(19, 0, 255);
 
 	};
 	Connections = {};
