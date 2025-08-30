@@ -1191,7 +1191,7 @@ local PAGES = WINDOW.Pages
 local settingsOpen = false
 local UIClosed = false
 local Connected = false
-local UserInfoDisabled = true
+local UserInfoDisabled = false
 local UIToggle = Enum.KeyCode.RightShift
 
 function SetUserInfo()
