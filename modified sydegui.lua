@@ -4474,6 +4474,7 @@ function syde:Init(library)
 				PlaceHolder = Dropdown.PlaceHolder or "Select Option...";
 				Multi = Dropdown.Multi or false;
 				CallBack = Dropdown.CallBack;
+				Flag = Dropdown.Flag;
 			}
 
 			local dropdown = PAGES.Page.Dropdown:Clone()
