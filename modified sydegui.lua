@@ -4475,6 +4475,8 @@ function syde:Init(library)
 				Multi = Dropdown.Multi or false;
 				CallBack = Dropdown.CallBack;
 				Flag = Dropdown.Flag;
+				Type = "Dropdown";
+				Value = Dropdown.Multi and {} or Dropdown.StarterOption;
 			}
 
 			local dropdown = PAGES.Page.Dropdown:Clone()
@@ -4522,7 +4524,6 @@ function syde:Init(library)
 				tweenservice:Create(dropdown.dropHolder.drop.Search.TextBox, TweenInfo.new(1, Enum.EasingStyle.Exponential), { TextTransparency = 0 }):Play()
 				tweenservice:Create(dropdown.dropHolder.drop.Search.ImageLabel, TweenInfo.new(1, Enum.EasingStyle.Exponential), { ImageTransparency = 0.9 }):Play()
 				tweenservice:Create(dropdown.dropHolder.drop.Search.icon, TweenInfo.new(1, Enum.EasingStyle.Exponential), { ImageTransparency = 0.85 }):Play()
-
 			end
 
 			local function CloseDrop()
@@ -4541,7 +4542,6 @@ function syde:Init(library)
 				task.wait(0.6)
 				dropdown.dropHolder.drop.Container.Visible = false
 				dropdown.dropHolder.drop.Search.Visible = false
-
 			end
 
 			dropdown.dropHolder.drop.down.MouseButton1Click:Connect(function()
@@ -4604,49 +4604,6 @@ function syde:Init(library)
 				end
 			end
 
-            --[[
-			--[SEARCH]
-			dropdown.dropHolder.drop.Search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
-				local searchText = dropdown.dropHolder.drop.Search.TextBox.Text:lower()
-
-				for _, option in ipairs(dropdown.dropHolder.drop.Container:GetChildren()) do
-					if option:IsA("Frame") and option:FindFirstChild("Title") then
-						local optionText = option.Title.Text:lower()
-						local isTemplate = option == option or option.Name == "Option"
-						local shouldShow = not isTemplate and (searchText == "" or optionText:find(searchText, 1, true))
-
-						if shouldShow then
-							option.Visible = true
-							if SelectedOptions[option.Title.Text] then
-								tweenservice:Create(option, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
-								tweenservice:Create(option, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(31, 31, 31)}):Play()
-								tweenservice:Create(option.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
-								tweenservice:Create(option.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
-								tweenservice:Create(option.ImageLabel, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 0}):Play()
-							else
-								tweenservice:Create(option, TweenInfo.new(1, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
-								tweenservice:Create(option, TweenInfo.new(1, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(22, 22, 22)}):Play()
-								tweenservice:Create(option.Title, TweenInfo.new(1, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
-								tweenservice:Create(option.UIStroke, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
-								tweenservice:Create(option.ImageLabel, TweenInfo.new(1, Enum.EasingStyle.Exponential), {ImageTransparency = 0.9}):Play()
-							end
-						else
-							-- Hide with animation, but wait before setting Visible = false
-							tweenservice:Create(option, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
-							tweenservice:Create(option, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(22, 22, 22)}):Play()
-							tweenservice:Create(option.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-							tweenservice:Create(option.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
-							tweenservice:Create(option.ImageLabel, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-							option.Visible = false
-						end
-					end
-				end
-
-				UpdateCustomLayout()
-			end)]]
-
-
-
 			local function SetDropdownOptions()
 				local starterSet = false
 				for _, OptionText in ipairs(DropdownData.Options) do
@@ -4656,7 +4613,7 @@ function syde:Init(library)
 					option.Visible = true
 					option.Name = OptionText
 
-					if OptionText == DropdownData.StarterOption and not starterSet then
+					if not DropdownData.Multi and OptionText == DropdownData.StarterOption and not starterSet then
 						starterSet = true
 						dropdown.dropHolder.drop.Selected.Text = OptionText
 						SelectedOptions = {[OptionText] = true}
@@ -4677,14 +4634,14 @@ function syde:Init(library)
 								tweenservice:Create(option, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(24, 24, 24)}):Play()
 								tweenservice:Create(option.ImageLabel, TweenInfo.new(0.3), {ImageTransparency = 0}):Play()
 							end
+							DropdownData.Value = SelectedOrder
 						else
-							dropdown.dropHolder.drop.Selected.Text = OptionText
-
 							SelectedOptions = {[OptionText] = true}
 							SelectedOrder = {OptionText}
+							DropdownData.Value = OptionText
 
 							for _, opt in ipairs(dropdown.dropHolder.drop.Container:GetChildren()) do
-								if opt:IsA("Frame") then
+								if opt:IsA("Frame") and opt.Name ~= "Option" then
 									tweenservice:Create(opt, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(22, 22, 22)}):Play()
 									tweenservice:Create(opt.ImageLabel, TweenInfo.new(0.3), {ImageTransparency = 0.9}):Play()
 								end
@@ -4692,30 +4649,75 @@ function syde:Init(library)
 
 							tweenservice:Create(option, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(24, 24, 24)}):Play()
 							tweenservice:Create(option.ImageLabel, TweenInfo.new(0.3), {ImageTransparency = 0}):Play()
-
-							if DropdownData.CallBack then
-								DropdownData.CallBack(OptionText)
-							end
-
 							CloseDrop()
 						end
 
 						UpdateSelectedText()
 
-						if DropdownData.Multi and DropdownData.CallBack then
-							DropdownData.CallBack(SelectedOrder)
+						if DropdownData.CallBack then
+							pcall(DropdownData.CallBack, DropdownData.Value)
 						end
+						SaveConfig()
 					end)
 				end
 
 				if not starterSet then
 					dropdown.dropHolder.drop.Selected.Text = DropdownData.PlaceHolder
 				end
-
 				UpdateCustomLayout()
 			end
 
+			function DropdownData:Set(NewValue)
+				SelectedOptions = {}
+				SelectedOrder = {}
+
+				local optionsMap = {}
+				for _, option in ipairs(dropdown.dropHolder.drop.Container:GetChildren()) do
+					if option:IsA("Frame") and option.Name ~= "Option" then
+						optionsMap[option.Name] = option
+						tweenservice:Create(option, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(22, 22, 22)}):Play()
+						tweenservice:Create(option.ImageLabel, TweenInfo.new(0.3), {ImageTransparency = 0.9}):Play()
+					end
+				end
+
+				if DropdownData.Multi then
+					if type(NewValue) == "table" then
+						for _, val in ipairs(NewValue) do
+							if optionsMap[val] then
+								AddToSelected(val)
+								local optionFrame = optionsMap[val]
+								tweenservice:Create(optionFrame, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(24, 24, 24)}):Play()
+								tweenservice:Create(optionFrame.ImageLabel, TweenInfo.new(0.3), {ImageTransparency = 0}):Play()
+							end
+						end
+						DropdownData.Value = SelectedOrder
+					end
+				else
+					if type(NewValue) == "string" and optionsMap[NewValue] then
+						SelectedOptions = {[NewValue] = true}
+						SelectedOrder = {NewValue}
+						DropdownData.Value = NewValue
+						local optionFrame = optionsMap[NewValue]
+						tweenservice:Create(optionFrame, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(24, 24, 24)}):Play()
+						tweenservice:Create(optionFrame.ImageLabel, TweenInfo.new(0.3), {ImageTransparency = 0}):Play()
+					else
+						DropdownData.Value = nil
+					end
+				end
+
+				UpdateSelectedText()
+				if DropdownData.CallBack then
+					pcall(DropdownData.CallBack, DropdownData.Value)
+				end
+			end
+
 			SetDropdownOptions()
+
+			if syde.ConfigEnabled and DropdownData.Flag then
+				syde.Flags[DropdownData.Flag] = DropdownData
+			end
+
+			return DropdownData
 		end
 
 
