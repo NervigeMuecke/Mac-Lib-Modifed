@@ -3,7 +3,7 @@ local MacLib = {
 	Color1 = Color3.fromRGB(8, 0, 122),
 	Color2 = Color3.fromRGB(11, 11, 11),
 	Color3 = Color3.fromRGB(8, 0, 122),
-	Folder = "ZYPHERION",
+	Folder = "Z3US",
 	Animation = true,
 	GetService = function(service)
 		return cloneref and cloneref(game:GetService(service)) or game:GetService(service)
@@ -11,7 +11,7 @@ local MacLib = {
 }
 
 local HttpService = game:GetService("HttpService")
-local settingsFileName = "ZYPHERION/Arsenal/GUI/ColorData.json"
+local settingsFileName = "Z3US/Arsenal/GUI/ColorData.json"
 local Functions = {}
 
 local function Color3ToTable(color)
@@ -4932,48 +4932,48 @@ function MacLib:Window(Settings)
 		notification.Name = "Notification"
 		notification.AnchorPoint = Vector2.new(0.5, 0.5)
 		notification.AutomaticSize = Enum.AutomaticSize.Y
-		--notification.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		notification.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 		notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		notification.BorderSizePixel = 0
 		notification.Position = UDim2.fromScale(0.5, 0.5)
 		notification.Size = UDim2.fromOffset(Settings.SizeX or 250, 0)
 
-		local gradient = Instance.new("UIGradient")
+		--local gradient = Instance.new("UIGradient")
+		--
+		--gradient.Color = ColorSequence.new({
+		--	ColorSequenceKeypoint.new(0, MacLib.Color1),
+		--	ColorSequenceKeypoint.new(0.5, MacLib.Color2),
+		--	ColorSequenceKeypoint.new(1, MacLib.Color3),
+		--})
+		--gradient.Rotation = 45
+		--gradient.Parent = notification
 
-		gradient.Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, MacLib.Color1),
-			ColorSequenceKeypoint.new(0.5, MacLib.Color2),
-			ColorSequenceKeypoint.new(1, MacLib.Color3),
-		})
-		gradient.Rotation = 45
-		gradient.Parent = notification
+		--local tweenService = game:GetService("TweenService")
+		--local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
+		--local goal = { Rotation = gradient.Rotation + 360 }
+		--local tween = tweenService:Create(gradient, info, goal)
+--
+--
+		--RunService.RenderStepped:Connect(function()
+		--	if MacLib.Animation then 
+		--		tween:Play()
+		--	else
+		--		tween:Pause()
+		--	end
+		--	Functions:saveColorsToFile()
+		--	gradient.Color = ColorSequence.new({
+		--		ColorSequenceKeypoint.new(0, MacLib.Color1),
+		--		ColorSequenceKeypoint.new(0.5, MacLib.Color2),
+		--		ColorSequenceKeypoint.new(1, MacLib.Color3),
+		--	})
+		--end)
 
-		local tweenService = game:GetService("TweenService")
-		local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
-		local goal = { Rotation = gradient.Rotation + 360 }
-		local tween = tweenService:Create(gradient, info, goal)
-
-
-		RunService.RenderStepped:Connect(function()
-			if MacLib.Animation then 
-				tween:Play()
-			else
-				tween:Pause()
-			end
-			Functions:saveColorsToFile()
-			gradient.Color = ColorSequence.new({
-				ColorSequenceKeypoint.new(0, MacLib.Color1),
-				ColorSequenceKeypoint.new(0.5, MacLib.Color2),
-				ColorSequenceKeypoint.new(1, MacLib.Color3),
-			})
-		end)
-
-		local tweenService = game:GetService("TweenService")
-		local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
-		local goal = { Rotation = gradient.Rotation + 360 }
-		local tween = tweenService:Create(gradient, info, goal)
-
-		tween:Play()
+		--local tweenService = game:GetService("TweenService")
+		--local info = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false)
+		--local goal = { Rotation = gradient.Rotation + 360 }
+		--local tween = tweenService:Create(gradient, info, goal)
+--
+		--tween:Play()
 
 		notification.Parent = notifications
 
