@@ -4088,6 +4088,144 @@ local Library do
 
         return Textbox
     end
+
+    Library.Watermark = {} 
+        local Watermark = Library.Watermark do
+
+        Watermark["Frame"] = Instances:Create("Frame", {
+            Parent = Library.Holder.Instance,
+            Name = "\0",
+            BorderSizePixel = 0,
+            BorderColor3 = FromRGB(0, 0, 0),
+            AutomaticSize = Enum.AutomaticSize.X,
+            Size = UDim2New(0, 0, 0, 22),
+            Position = UDim2New(0, 15, 0, 15),
+            BackgroundColor3 = FromRGB(14, 14, 14),
+            ZIndex = 100,
+        }) Watermark["Frame"]:AddToTheme({BackgroundColor3 = "Background"})
+
+        Instances:Create("UICorner", {
+            Parent = Watermark["Frame"].Instance,
+            CornerRadius = UDimNew(0, 4),
+        })
+
+        Instances:Create("UIStroke", {
+            Parent = Watermark["Frame"].Instance,
+            Color = FromRGB(24, 24, 24),
+            ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+        }):AddToTheme({Color = "Border"})
+
+        Instances:Create("UIPadding", {
+            Parent = Watermark["Frame"].Instance,
+            PaddingLeft = UDimNew(0, 8),
+            PaddingRight = UDimNew(0, 8),
+            PaddingTop = UDimNew(0, 4),
+            PaddingBottom = UDimNew(0, 4),
+        })
+
+        Instances:Create("UIListLayout", {
+            Parent = Watermark["Frame"].Instance,
+            FillDirection = Enum.FillDirection.Horizontal,
+            VerticalAlignment = Enum.VerticalAlignment.Center,
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Padding = UDimNew(0, 6),
+        })
+
+        Watermark["Accent"] = Instances:Create("Frame", {
+            Parent = Watermark["Frame"].Instance,
+            Name = "\0",
+            BorderSizePixel = 0,
+            BorderColor3 = FromRGB(0, 0, 0),
+            Size = UDim2New(0, 2, 1, -6),
+            BackgroundColor3 = FromRGB(181, 116, 16),
+            ZIndex = 100,
+            LayoutOrder = 0,
+        }) Watermark["Accent"]:AddToTheme({BackgroundColor3 = "Accent"})
+
+        Instances:Create("UICorner", {
+            Parent = Watermark["Accent"].Instance,
+            CornerRadius = UDimNew(1, 0),
+        })
+
+        Watermark["Title"] = Instances:Create("TextLabel", {
+            Parent = Watermark["Frame"].Instance,
+            FontFace = Library.BoldFont,
+            TextColor3 = FromRGB(255, 255, 255),
+            Text = "",
+            Name = "\0",
+            BorderSizePixel = 0,
+            BorderColor3 = FromRGB(0, 0, 0),
+            AutomaticSize = Enum.AutomaticSize.X,
+            Size = UDim2New(0, 0, 1, 0),
+            BackgroundTransparency = 1,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextSize = 13,
+            ZIndex = 100,
+            LayoutOrder = 1,
+            BackgroundColor3 = FromRGB(255, 255, 255),
+        }) Watermark["Title"]:AddToTheme({TextColor3 = "Text"})
+
+        Instances:Create("TextLabel", {
+            Parent = Watermark["Frame"].Instance,
+            FontFace = Library.Font,
+            TextColor3 = FromRGB(255, 255, 255),
+            Text = "·",
+            Name = "\0",
+            BorderSizePixel = 0,
+            BorderColor3 = FromRGB(0, 0, 0),
+            AutomaticSize = Enum.AutomaticSize.X,
+            Size = UDim2New(0, 0, 1, 0),
+            BackgroundTransparency = 1,
+            TextXAlignment = Enum.TextXAlignment.Center,
+            TextTransparency = 0.5,
+            TextSize = 13,
+            ZIndex = 100,
+            LayoutOrder = 2,
+            BackgroundColor3 = FromRGB(255, 255, 255),
+        }):AddToTheme({TextColor3 = "Text"})
+
+        Watermark["Info"] = Instances:Create("TextLabel", {
+            Parent = Watermark["Frame"].Instance,
+            FontFace = Library.Font,
+            TextColor3 = FromRGB(255, 255, 255),
+            TextTransparency = 0.5,
+            Text = "...",
+            Name = "\0",
+            BorderSizePixel = 0,
+            BorderColor3 = FromRGB(0, 0, 0),
+            AutomaticSize = Enum.AutomaticSize.X,
+            Size = UDim2New(0, 0, 1, 0),
+            BackgroundTransparency = 1,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextSize = 13,
+            ZIndex = 100,
+            LayoutOrder = 3,
+            BackgroundColor3 = FromRGB(255, 255, 255),
+        }) Watermark["Info"]:AddToTheme({TextColor3 = "Text"})
+
+        Watermark["Frame"]:MakeDraggable()
+
+        Library:Thread(function()
+            while task.wait(1) do
+                local fps = math.floor(1 / RunService.RenderStepped:Wait())
+                local ping = math.floor(Players.LocalPlayer:GetNetworkPing() * 1000) or 0
+                Watermark["Info"].Instance.Text = StringFormat("%d fps  %dms", fps, ping)
+            end
+        end)
+
+        function Watermark:SetTitle(Text)
+            Watermark["Title"].Instance.Text = Text
+        end
+
+        function Watermark:SetInfo(Text)
+            Watermark["Info"].Instance.Text = Text
+        end
+
+        function Watermark:SetVisible(Bool)
+            Watermark["Frame"].Instance.Visible = Bool
+        end
+    end
 end
+
 getgenv().Library = Library
 return Library
