@@ -4119,7 +4119,7 @@ local Library do
             BorderColor3 = FromRGB(0, 0, 0),
             AutomaticSize = Enum.AutomaticSize.X,
             Size = UDim2New(0, 0, 0, 22),
-            Position = UDim2New(0, 15, 0, 15),
+            Position = UDim2New(0, 175, 0, 22),
             BackgroundColor3 = FromRGB(14, 14, 14),
             ZIndex = 100,
         }) Watermark["Frame"]:AddToTheme({BackgroundColor3 = "Background"})
