@@ -2034,10 +2034,30 @@ local Library do
                 Debounce = false
                 Items["PageContent"].Instance.Visible = Bool
                 Items["PageContent"].Instance.Parent = Bool and Page.Window.Items["Inline"].Instance or Library.UnusedHolder.Instance
+
                 if Page.Search then 
                     Items["Columns"]:Tween(nil, {Position = Bool and UDim2New(0, 0, 0, 100) or UDim2New(0, 0, 1, 0)})
                 else
                     Items["Columns"]:Tween(nil, {Position = Bool and UDim2New(0, 0, 0, 55) or UDim2New(0, 0, 1, 0)})
+                end
+
+                if Bool then
+                    local firstSubPage = nil
+                    for _, subPage in Page.Window.SubPages do
+                        if subPage.Page == Page then
+                            if not firstSubPage then
+                                firstSubPage = subPage
+                            else
+                                subPage.Items["PageContent"].Instance.Visible = false
+                                subPage.Items["Inactive"]:Tween(nil, {TextTransparency = 0.5, BackgroundColor3 = Library.Theme.Inline})
+                                subPage.Items["Shadow"]:Tween(nil, {ImageTransparency = 1})
+                                subPage.Items["UIStroke"]:Tween(nil, {Color = Library.Theme.Border})
+                            end
+                        end
+                    end
+                    if firstSubPage then
+                        firstSubPage:Turn(true)
+                    end
                 end
             end)            
         end
